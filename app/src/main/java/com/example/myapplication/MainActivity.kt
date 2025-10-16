@@ -19,8 +19,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.view.InitialSettingsScreen
+import com.example.myapplication.view.NutritionStatusScreen
 import com.example.myapplication.view.TermsScreen
 import com.example.myapplication.viewmodel.InitialSettingsViewModel
+import com.example.myapplication.viewmodel.NutritionStatusViewModel
 import com.example.myapplication.viewmodel.TermsViewModel
 
 class MainActivity : ComponentActivity() {
@@ -59,7 +61,6 @@ fun MainApp() {
         }
         // 初期設定画面
         Screen.Settings -> {
-            // InitialSettingsViewModelをここで取得
             val settingsViewModel: InitialSettingsViewModel = viewModel(factory = object : ViewModelProvider.Factory {
                 override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                     if (modelClass.isAssignableFrom(InitialSettingsViewModel::class.java)) {
@@ -71,8 +72,13 @@ fun MainApp() {
             })
             InitialSettingsScreen(
                 viewModel = settingsViewModel,
-                onSave = { currentScreen = Screen.Main } // 保存したらメイン画面へ
+                onSave = { currentScreen = Screen.NutritionStatus } // 保存したら栄養状況画面へ
             )
+        }
+        // 栄養状況画面
+        Screen.NutritionStatus -> {
+            val nutritionViewModel: NutritionStatusViewModel = viewModel()
+            NutritionStatusScreen(viewModel = nutritionViewModel)
         }
     }
 }
@@ -106,7 +112,8 @@ fun MainScreen(onNavigateToNext: () -> Unit, modifier: Modifier = Modifier) {
 enum class Screen {
     Main, // メイン画面
     Terms, // 利用規約画面
-    Settings // 初期設定画面
+    Settings, // 初期設定画面
+    NutritionStatus // 栄養状況画面
 }
 
 @Preview(showBackground = true)
