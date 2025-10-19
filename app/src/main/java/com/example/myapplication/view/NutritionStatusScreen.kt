@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -42,8 +41,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -127,16 +129,7 @@ fun NutritionStatusScreen(viewModel: NutritionStatusViewModel = viewModel()) {
                     Spacer(Modifier.height(12.dp))
                 }
             }
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(onClick = { /* TODO */ }, modifier = Modifier.weight(1f)) {
-                    Text("推奨カロリー")
-                }
-            }
-            Spacer(Modifier.weight(1f)) // Push buttons to the bottom
+            Spacer(Modifier.weight(1f)) // Push content to the top
         }
     }
 }
@@ -201,9 +194,26 @@ fun CalorieCircularChart(nutrient: NutritionStatusViewModel.NutrientIntake) {
         )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = String.format(Locale.US, "%.0f", nutrient.total),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = MaterialTheme.typography.headlineMedium.fontSize,
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append(String.format(Locale.US, "%.0f", nutrient.total))
+                    }
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Gray
+                        )
+                    ) {
+                        append("/${String.format(Locale.US, "%.0f", nutrient.goal)}")
+                    }
+                },
+                textAlign = TextAlign.Center
             )
             Text(text = "kcal", fontSize = 16.sp, color = Color.Gray)
             Spacer(modifier = Modifier.height(4.dp))
