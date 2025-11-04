@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.view.InitialSettingsScreen
 import com.example.myapplication.view.NutritionStatusScreen
+import com.example.myapplication.view.StoreSearchScreen
 import com.example.myapplication.view.TermsScreen
 import com.example.myapplication.viewmodel.InitialSettingsViewModel
 import com.example.myapplication.viewmodel.NutritionStatusViewModel
@@ -78,7 +79,14 @@ fun MainApp() {
         // 栄養状況画面
         Screen.NutritionStatus -> {
             val nutritionViewModel: NutritionStatusViewModel = viewModel()
-            NutritionStatusScreen(viewModel = nutritionViewModel)
+            NutritionStatusScreen(
+                viewModel = nutritionViewModel,
+                onNavigateToStoreSearch = { currentScreen = Screen.StoreSearch } // 店舗検索画面へ
+            )
+        }
+        // 店舗検索画面
+        Screen.StoreSearch -> {
+            StoreSearchScreen(onBackClicked = { currentScreen = Screen.NutritionStatus }) // 栄養状況画面へ戻る
         }
     }
 }
@@ -113,7 +121,8 @@ enum class Screen {
     Main, // メイン画面
     Terms, // 利用規約画面
     Settings, // 初期設定画面
-    NutritionStatus // 栄養状況画面
+    NutritionStatus, // 栄養状況画面
+    StoreSearch // 店舗検索画面
 }
 
 @Preview(showBackground = true)

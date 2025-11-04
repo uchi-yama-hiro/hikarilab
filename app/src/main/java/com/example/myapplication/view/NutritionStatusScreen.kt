@@ -57,7 +57,10 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NutritionStatusScreen(viewModel: NutritionStatusViewModel = viewModel()) {
+fun NutritionStatusScreen(
+    viewModel: NutritionStatusViewModel = viewModel(),
+    onNavigateToStoreSearch: () -> Unit
+) {
     val nutrients by viewModel.nutrients.collectAsState()
     var isFabExpanded by remember { mutableStateOf(false) }
 
@@ -127,6 +130,9 @@ fun NutritionStatusScreen(viewModel: NutritionStatusViewModel = viewModel()) {
                 otherNutrients.forEach { nutrient ->
                     NutrientBar(nutrient)
                     Spacer(Modifier.height(12.dp))
+                }
+                TextButton(onClick = onNavigateToStoreSearch) {
+                    Text("hottopper")
                 }
             }
             Spacer(Modifier.weight(1f)) // Push content to the top
@@ -278,6 +284,6 @@ fun NutrientBar(nutrient: NutritionStatusViewModel.NutrientIntake) {
 @Composable
 fun NutritionStatusScreenPreview() {
     MaterialTheme {
-        NutritionStatusScreen()
+        NutritionStatusScreen(onNavigateToStoreSearch = {})
     }
 }
